@@ -13,3 +13,4 @@ serde_derive = "*"
 lazy_static = "*"
 crossbeam = "*"
 uuid = { version = "0.4", features = ["v4"] }
+threadpool = "*"
