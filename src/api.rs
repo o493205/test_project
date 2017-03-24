@@ -12,7 +12,7 @@ use event::Event;
 use msg_channel::MsgChannel;
 
 pub fn start(q: Arc<MsQueue<Event>>) {
-    let c: MsgChannel = MsgChannel { chan: q };
+    let c: MsgChannel = MsgChannel(q);
     thread::spawn(|| {
         rocket::ignite()
             .mount("/", routes![submit])
@@ -31,7 +31,8 @@ fn submit(request: JSON<JobRequest>, queue: State<MsgChannel>) -> String {
         job_request: r,
     };
     if j.validate() {
-        queue.0.push(uuid.clone());
+        let e: Event = Event { message: uuid.clone() };
+        queue.0.push(e);
         QUEUE.lock().unwrap().push_back(j);
         uuid
     } else {
