@@ -17,6 +17,5 @@ pub mod api;
 pub mod job_request;
 pub mod job;
 pub mod process;
-pub mod queue;
 pub mod msg_channel;
 pub mod event;

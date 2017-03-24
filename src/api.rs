@@ -5,7 +5,6 @@ use rocket::State;
 use rocket_contrib::{JSON, Value};
 use job_request::JobRequest;
 use job::Job;
-use queue::QUEUE;
 use uuid::Uuid;
 use crossbeam::sync::MsQueue;
 use event::Event;

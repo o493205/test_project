@@ -2,7 +2,6 @@ use std::thread;
 use std::collections::HashMap;
 use job_request::JobRequest;
 use job::Job;
-use queue::QUEUE;
 use serde_json;
 use crossbeam::sync::MsQueue;
 use std::sync::Arc;
@@ -30,16 +29,6 @@ impl Processor {
                 Some(e) => println!("{:?}", e),
                 _ => {}
             }
-            let result = QUEUE.lock().unwrap().pop_front();
-            match result {
-                Some(dj) => self.add_job(dj),
-                None => {}
-            }
         }
-    }
-
-    fn add_job(&mut self, job: Job) {
-        print!("{}, {:?}", job.job_id.clone(), job.job_request.clone());
-        self.jobs.insert(job.job_id, job.job_request);
     }
 }
