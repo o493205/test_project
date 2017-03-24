@@ -9,6 +9,7 @@ use queue::QUEUE;
 use uuid::Uuid;
 use crossbeam::sync::MsQueue;
 use event::Event;
+use event::EventType;
 use msg_channel::MsgChannel;
 
 pub fn start(q: Arc<MsQueue<Event>>) {
@@ -31,9 +32,8 @@ fn submit(request: JSON<JobRequest>, queue: State<MsgChannel>) -> String {
         job_request: r,
     };
     if j.validate() {
-        let e: Event = Event { message: uuid.clone() };
+        let e: Event = Event { event_type: EventType::New, job: j };
         queue.0.push(e);
-        QUEUE.lock().unwrap().push_back(j);
         uuid
     } else {
         "Unable to validate request.".to_string()
