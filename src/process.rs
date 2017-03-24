@@ -2,7 +2,6 @@ use std::thread;
 use std::collections::HashMap;
 use job_request::JobRequest;
 use job::Job;
-use serde_json;
 use crossbeam::sync::MsQueue;
 use std::sync::Arc;
 use event::Event;

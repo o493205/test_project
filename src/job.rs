@@ -1,4 +1,3 @@
-use serde_json;
 use job_request::JobRequest;
 
 #[derive(Debug, Serialize, Deserialize)]

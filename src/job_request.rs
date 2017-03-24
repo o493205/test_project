@@ -1,5 +1,3 @@
-use serde_json;
-
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum JobType {
     FFprobe,
