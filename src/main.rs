@@ -1,10 +1,8 @@
-extern crate crossbeam;
 extern crate test_project;
 use test_project::api;
 use test_project::process;
 use test_project::event::Event;
-use crossbeam::scope;
-use crossbeam::sync::MsQueue;
+use test_project::crossbeam::sync::MsQueue;
 use std::io;
 use std::sync::Arc;
 
