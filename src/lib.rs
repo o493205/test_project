@@ -9,6 +9,7 @@ extern crate serde_json;
 extern crate serde_derive;
 extern crate uuid;
 pub extern crate crossbeam;
+extern crate threadpool;
 
 pub mod api;
 pub mod job_request;
