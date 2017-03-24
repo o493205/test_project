@@ -29,8 +29,12 @@ impl Processor {
         loop {
             match self.api_to_processor_channel.try_pop() {
                 Some(e) => {
-                    if e.event_type == EventType::Status {
-                        self.processor_to_api_channel.push(e);
+                    match e.event_type {
+                        EventType::New => {
+                            let jr: JobRequest = e.job.job_request.lock().unwrap().clone().unwrap();
+                        },
+                        EventType::Status => self.processor_to_api_channel.push(e),
+                        EventType::Cancel => { },
                     }
                 }
                 _ => {}
