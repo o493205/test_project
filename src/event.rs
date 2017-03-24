@@ -1,7 +1,7 @@
 use std::sync::Mutex;
 use job::Job;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum EventType {
     New,
     Status,
@@ -11,5 +11,5 @@ pub enum EventType {
 #[derive(Debug)]
 pub struct Event {
     pub event_type: EventType,
-    pub job: Mutex<Option<Job>>,
+    pub job: Job,
 }

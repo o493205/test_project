@@ -10,7 +10,7 @@ fn main() {
     let api_to_processor: Arc<MsQueue<Event>> = Arc::new(MsQueue::new());
     let processor_to_api: Arc<MsQueue<Event>> = Arc::new(MsQueue::new());
     api::start(api_to_processor.clone(), processor_to_api.clone());
-    process::start(api_to_processor.clone());
+    process::start(api_to_processor.clone(), processor_to_api.clone());
     print!("Press any key to quit");
     let mut input = String::new();
     io::stdin().read_line(&mut input);

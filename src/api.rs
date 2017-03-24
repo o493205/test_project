@@ -16,7 +16,7 @@ pub fn start(api_to_processor: Arc<MsQueue<Event>>, processor_to_api: Arc<MsQueu
     let c: MsgChannel = MsgChannel(api_to_processor, processor_to_api);
     thread::spawn(|| {
         rocket::ignite()
-            .mount("/", routes![submit])
+            .mount("/", routes![submit, get_status])
             .catch(errors![not_found])
             .manage(c)
             .launch();
@@ -29,12 +29,12 @@ fn submit(request: JSON<JobRequest>, queue: State<MsgChannel>) -> String {
     let uuid: String = Uuid::new_v4().to_string();
     let j: Job = Job {
         job_id: uuid.clone(),
-        job_request: r,
+        job_request: Mutex::new(Some(r)),
     };
     if j.validate() {
         let e: Event = Event {
             event_type: EventType::New,
-            job: Mutex::new(Some(j)),
+            job: j,
         };
         queue.0.push(e);
         uuid
@@ -47,8 +47,21 @@ fn submit(request: JSON<JobRequest>, queue: State<MsgChannel>) -> String {
 fn get_status(job_id: &str, queue: State<MsgChannel>) -> String {
     let e: Event = Event {
         event_type: EventType::Status,
-        job: Mutex::new(None),
+        job: Job {
+            job_id: job_id.to_string(),
+            job_request: Mutex::new(None),
+        },
     };
+    queue.0.push(e);
+    loop {
+        match queue.1.try_pop() {
+            Some(r) => {
+                println!("Response from status {:?}", r);
+                break;
+            }
+            _ => {}
+        }
+    }
     job_id.to_string()
 }
 
