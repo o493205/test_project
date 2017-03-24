@@ -11,7 +11,7 @@ extern crate serde_derive;
 #[macro_use]
 extern crate lazy_static;
 extern crate uuid;
-extern crate crossbeam;
+pub extern crate crossbeam;
 
 pub mod api;
 pub mod job_request;
